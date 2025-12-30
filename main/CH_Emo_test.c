@@ -11,7 +11,7 @@
 
 #define TX_PIN  GPIO_NUM_22
 #define RX_PIN  GPIO_NUM_21
-#define LED_PIN GPIO_NUM_12
+// #define LED_PIN GPIO_NUM_12
 
 #define VCU_100 0x18FF0A81
 #define RECTIFIER_DATA 0x18FF50E5
@@ -19,13 +19,13 @@
 twai_general_config_t g_config = TWAI_GENERAL_CONFIG_DEFAULT(TX_PIN, RX_PIN, TWAI_MODE_NORMAL);
 twai_timing_config_t t_config = TWAI_TIMING_CONFIG_500KBITS();
 twai_filter_config_t f_config = TWAI_FILTER_CONFIG_ACCEPT_ALL();
-gpio_config_t led={
-    .pin_bit_mask = (1Ull<<LED_PIN),
-    .mode = GPIO_MODE_OUTPUT,
-    .pull_down_en = GPIO_PULLDOWN_DISABLE,
-    .pull_up_en = GPIO_PULLUP_DISABLE,
-    .intr_type = GPIO_INTR_DISABLE,
-};
+// gpio_config_t led={
+//     .pin_bit_mask = (1Ull<<LED_PIN),
+//     .mode = GPIO_MODE_OUTPUT,
+//     .pull_down_en = GPIO_PULLDOWN_DISABLE,
+//     .pull_up_en = GPIO_PULLUP_DISABLE,
+//     .intr_type = GPIO_INTR_DISABLE,
+// };
 
 QueueHandle_t transmitQueue = NULL;
 
@@ -123,12 +123,12 @@ _Noreturn void rectifier_can_task(__unused void *params)
             rectifierMessage.data[2] = (tx_I_raw >> 8) & 0xFF;
             rectifierMessage.data[3] = tx_I_raw & 0xFF;
             rectifierMessage.data[4] = 0x00;
-            gpio_set_level(LED_PIN,1);
+            
         }
         else
         {
             rectifierMessage.data[4] = 1;
-            gpio_set_level(LED_PIN,0);
+           
         }
 
         xQueueSend(transmitQueue, &rectifierMessage, 0);
